@@ -6,4 +6,5 @@ export declare class StaffController {
     updateEmployee(req: any, res: any): Promise<void>;
     showFormUpdate(req: any, res: any): Promise<void>;
     detailEmployee(req: any, res: any): Promise<void>;
+    searchByRoom(req: any, res: any): Promise<void>;
 }

@@ -11,5 +11,6 @@ StaffRouter.get("/delete", StaffControllers.deleteEmployee);
 StaffRouter.get("/update", StaffControllers.showFormUpdate);
 StaffRouter.post("/update", StaffControllers.updateEmployee);
 StaffRouter.get("/detail/:id", StaffControllers.detailEmployee);
+StaffRouter.get("/admin/employees/search/room", StaffControllers.searchByRoom);
 exports.default = StaffRouter;
 //# sourceMappingURL=Staff.router.js.map

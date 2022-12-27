@@ -7,7 +7,7 @@ export class StaffController {
     const branchs = await Branch.find();
     const Staffs = await Staff.find().populate("branch").sort({ age: 1 });
 
-    res.render("danhsachNV", { data: Staffs });
+    res.render("danhsachNV", { data: Staffs, branchs: branchs });
   }
 
   async showFormAddEmploy(req: any, res: any) {
@@ -66,5 +66,17 @@ export class StaffController {
       "branch"
     );
     res.render("detail", { data: Staffs });
+  }
+  async searchByRoom(req, res) {
+    const roomId = req.query.roomId;
+    let query = {};
+    if (roomId !== "All branchs") {
+      query = {
+        branch: roomId,
+      };
+    }
+    const employees = await Staff.find(query).populate("branch");
+    console.log(employees);
+    res.status(200).json(employees);
   }
 }

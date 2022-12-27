@@ -17,4 +17,5 @@ StaffRouter.post("/update", StaffControllers.updateEmployee);
 
 StaffRouter.get("/detail/:id", StaffControllers.detailEmployee);
 
+StaffRouter.get("/admin/employees/search/room", StaffControllers.searchByRoom);
 export default StaffRouter;

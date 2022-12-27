@@ -18,7 +18,19 @@
         <!-- place navbar here -->
     </header>
     <main class="container mt-5">
-        <h2>Employee Management</h2>
+        <div class="d-flex justify-content-between">
+            <h2>Employee Management</h2>
+            <select name="branch" class="form-select w-25 " onchange="chooseRoom(this.value)">
+                <option value="All branchs" selected>
+                    All branchs
+                </option>
+                <% branchs.forEach((item)=>{ %>
+                    <option value="<%= item.id %>">
+                        <%= item.name %>
+                    </option>
+                    <% }) %>
+            </select>
+        </div>
         <table class="table">
             <tr>
                 <th>Employee Code</th>
@@ -28,35 +40,39 @@
                 <th>Branch</th>
                 <th></th>
             </tr>
-            <% data.forEach((item)=>{ %>
-                <tr>
-                    <td>
-                        <a href="/detail/<%= item._id %> ">
-                            <%=item.maNV%>
-                        </a>
-                    </td>
-                    <td>
-                        <%=item.name%>
-                    </td>
-                    <td>
-                        <%=item.age%>
-                    </td>
-                    <td>
-                        <%=item.salary%>
-                    </td>
-                    <td>
-                        <%=item.branch.name%>
-                    </td>
-                    <td>
-                        <a href="/delete?id=<%=item._id%>">
-                            <button class="btn btn-danger" onclick="return confirm('Are you sure you want to delete employee')">delete</button>
-                        </a>
-                        <a href="/update?id=<%=item._id%>">
-                            <button class="btn btn-primary">update</button>
-                        </a>
-                    </td>
-                </tr>
-                <% }) %>
+            <tbody id="list-employees">
+                <% data.forEach((item)=>{ %>
+                    <tr>
+                        <td>
+                            <a href="/detail/<%= item._id %> ">
+                                <%=item.maNV%>
+                            </a>
+                        </td>
+                        <td>
+                            <%=item.name%>
+                        </td>
+                        <td>
+                            <%=item.age%>
+                        </td>
+                        <td>
+                            <%=item.salary%>
+                        </td>
+                        <td>
+                            <%=item.branch.name%>
+                        </td>
+                        <td>
+                            <a href="/delete?id=<%=item._id%>">
+                                <button class="btn btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete employee')">delete</button>
+                            </a>
+                            <a href="/update?id=<%=item._id%>">
+                                <button class="btn btn-primary">update</button>
+                            </a>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+
 
         </table>
         <a href="/add">
@@ -69,6 +85,41 @@
         <!-- place footer here -->
     </footer>
     <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js"
+        integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const chooseRoom = value => {
+            axios.get('/admin/employees/search/room', {
+                params: {
+                    roomId: value
+                }
+            }).then(res => {
+                let data = res.data;
+                console.log(data);
+                let html = '';
+                data.forEach((employee, index) => {
+                    html += `<tr>`;
+                    html += `<td>
+                        <a href="/detail/${employee.maNV}">
+                                ${employee.maNV}
+                            </a>
+                        </td>`;
+                    html += `<td>${employee.name}</td>`;
+                    html += `<td>${employee.age}</td>`;
+                    html += `<td>${employee.name}</td>`;
+                    html += `<td>${employee.branch.name}</td>`;
+                    html += `<td>
+                          <a onclick="return confirm('Do you want to delete?')"
+                                               href="/delete?id=${employee._id}>" class="btn btn-danger">Delete</a>
+                          <a href="/update?id=${employee._id}"
+                                               class="btn btn-primary">Update</a>
+                     </td>`;
+                })
+                document.getElementById('list-employees').innerHTML = html;
+            })
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
         </script>
